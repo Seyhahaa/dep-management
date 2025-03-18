@@ -1,0 +1,26 @@
+/* ./src/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Angkor&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+h1 {
+    font-family: 'Angkor', cursive;
+    line-height: 1.5;
+  }
+  h2 {
+    font-family:  "Kantumruy Pro", sans-serif;
+    line-height: 1.1;
+  }
+  :root{
+    font-family:  "Kantumruy Pro", sans-serif;
+  }
+select{
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+th{
+  font-family:  "Kantumruy Pro", sans-serif;
+  color: #706C6C;
+}
