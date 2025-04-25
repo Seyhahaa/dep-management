@@ -14,7 +14,10 @@ import {
   IoDocumentsSharp,
   IoImagesSharp,
   MdArrowdropdownRound,
+  FcGoogle,
 } from "oh-vue-icons/icons";
+import { createPinia } from "pinia";
+
 
 addIcons(
   MdDashboardRound,
@@ -27,9 +30,12 @@ addIcons(
   IoDocumentsSharp,
   IoImagesSharp,
   MdArrowdropdownRound,
+  FcGoogle,
 );
 
+const  pinia = createPinia();
 const app = createApp(App);
+app.use(pinia)
 app.use(router);
 app.component("v-icon", OhVueIcon);
 app.mount("#app");
