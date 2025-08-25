@@ -1,5 +1,6 @@
 import axios from "axios";
 import { defineStore } from "pinia";
+import { jwtDecode } from 'jwt-decode';
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -7,7 +8,16 @@ export const useAuthStore = defineStore('auth', {
         token: null,
     }),
     getters: {
-        isLoggedIn: (state) => !!state.token,
+        isAuthenticated: (state) => {
+            const accessToken = localStorage.getItem('token')
+            if (!accessToken) {
+                return false
+            }
+            const decoded = jwtDecode(accessToken)
+            const expire = new Date(decoded.exp * 1000)
+            const current = new Date()
+            return current > expire ? false : true
+        },
         getUser: (state) => {
             if (state.user) {
                 return JSON.parse(state.user);
@@ -28,7 +38,10 @@ export const useAuthStore = defineStore('auth', {
                 console.log(user.data)
                 this.token = data.token;
                 localStorage.setItem('token', data.token)
+                localStorage.setItem('user', user.data.username)
+                localStorage.setItem('picture', user.data.picture)
                 this.user = JSON.stringify(user.data);
+                console.log(this.user)
             // localStorage.setItem('viewerToken', this.viewerToken)
             // window.close();
         } catch (err) {

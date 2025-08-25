@@ -1,15 +1,9 @@
 <template>
-  <div class="h-[6rem]">
-    <div class="flex items-center justify-between mt-3 px-5">
-     <div class="flex items-center">
-      <img src="../assets/Logo.png" alt="" class="w-[5rem] h-[5rem] mr-1" />
-      <div>
-        <h1 class="text-[14px]">ក្រសួងវប្បធម៌ និងវិចិត្រសិល្បៈ</h1>
-        <h1 class="text-[14px]">នាយកដ្ឋានរដ្ឋបាលទូទៅ</h1>
-      </div>
-    </div>
-    <div class="flex mr-16">
-        <div class="relative ml-8 w-[30rem] !drop-shadow-xl">
+  <div class="">
+    <div class="flex items-center justify-between mt-3 ">
+      
+      <div class="flex mr-16 ">
+        <div class="relative w-[30rem] !drop-shadow-xl">
           <input
             type="text"
             id="Search"
@@ -39,27 +33,22 @@
           </span>
         </div>
         <!-- Office -->
-        <div class="relative ml-8 w-[12rem] drop-shadow-xl">
-          <select name="" id="" class="w-full rounded-full py-2.5 pe-10 p-4 shadow-xs sm:text-sm">
-            <option value="">ជ្រើសរើសការិយាល័យ</option>
+          <div class="relative ml-8">
+          <select name="" id="" class="w-[12rem] select rounded-full appearance-none z-50" aria-label="select">
+            <option disabled selected>ជ្រើសរើសការិយាល័យ</option>
             <option value="">រដ្ឋបាល</option>
             <option value="">ពត៌មានវិទ្យា</option>
             <option value="">តែងសេចក្តី</option>
             <option value="">សន្តិសុខ សណ្តាប់ធ្នាប់</option>
           </select>
-
-          <span class="absolute inset-y-0 end-0 grid w-10 place-content-center">
-            <button type="button" class="text-gray-600 hover:text-gray-700">
-              <span class="sr-only">Search</span>
-              <v-icon name="md-arrowdropdown-round" scale="1.5" />
-            </button>
-          </span>
         </div>
         <button type="button" class="rounded-full py-2 px-5 bg-[#577EF2] ml-8 text-white hover:bg-[#F2AE2E] transition-all">ស្វែងរក</button>
       </div>
-      <v-icon name="md-lightmode" scale="1.5" class="text-gray-500 cursor-pointer ml-16" />
-      <div>
-        <button v-if="!isSignIn.isLoggedIn" type="button" class="px-4 py-3 border-2 border-blue-500 rounded-full hover:bg-[#577EF2] hover:text-white
+      <div class="flex justify-center items-center">
+        <button @click="toggleDark()">
+          <v-icon name="md-lightmode" scale="1.5" class="text-gray-500 cursor-pointer mr-5" />
+        </button>
+        <button v-if="!isSignIn.isAuthenticated" type="button" class="px-4 py-3 border-2 border-blue-500 rounded-full hover:bg-[#577EF2] hover:text-white
           transition-all" aria-haspopup="dialog" aria-expanded="false" aria-controls="middle-center-modal" data-overlay="#middle-center-modal">ចូលប្រើប្រាស់</button>
 
           <div id="middle-center-modal" class="overlay modal overlay-open:opacity-100 overlay-open:duration-300 modal-middle hidden" role="dialog" tabindex="-1">
@@ -78,13 +67,12 @@
               </div>
             </div>
           </div>
-      </div>
-      <!-- Profile -->
+          <!-- Profile -->
       <div class="dropdown relative inline-flex">
         <button id="dropdown-footer" class="dropdown-toggle flex items-center" aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
-          <div v-if="isSignIn.isLoggedIn" class="flex items-center gap-2">
-            <img :src="isSignIn?.getUser?.picture" class="w-10 h-10 rounded-full" alt="">
-          <h1 class="text-[14px] mr-1">{{isSignIn?.getUser?.username}}</h1>
+          <div v-if="isSignIn.isAuthenticated" class="flex items-center gap-2">
+            <img :src="image" class="w-10 h-10 rounded-full" alt="">
+          <h1 class="text-[14px] mr-1">{{user}}</h1>
           <span class="icon-[tabler--chevron-down] dropdown-open:rotate-180 size-4"></span>
           </div>
         </button>
@@ -92,7 +80,7 @@
           <li><a class="dropdown-item" href="#"><button @click="showPopup = true">ប្រវត្តិរូប</button></a></li>
           <li><a class="dropdown-item" href="#">Settings</a></li>
           <li class="dropdown-footer gap-2">
-            <button class="btn btn-error btn-soft btn-block">ចាកចេញ</button>
+            <button @click="logout" class="btn btn-error btn-soft btn-block">ចាកចេញ</button>
           </li>
         </ul>
       </div>
@@ -113,22 +101,37 @@
           </div>
         </div>
       </div>
+      </div>
+      
     </div>
   </div>
 </template>
 <script setup>
 import { ref } from 'vue';
 import { useAuthStore } from '../store/auth';
+import { useDark, useToggle } from '@vueuse/core';
+    const isDark = useDark(); // Reactive variable for dark mode status
+    const toggleDark = useToggle(isDark); 
+    console.log(isDark.value); // Log the current dark mode status
   const showPopup = ref(false)
   const closePopup=()=>{
                 showPopup.value = false
         };
   const googleLogin=()=> {
             const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${import.meta.env.VITE_APP_GOOGLE_CLIENT_ID}&redirect_uri=${import.meta.env.VITE_APP_GOOGLE_REDIRECT_URL}&response_type=code&scope=profile%20email&access_type=offline`;
-            window.open(googleAuthUrl)
+            window.open(googleAuthUrl, '_self');
         }
   const isSignIn = useAuthStore()
-  const image = isSignIn?.getUser?.picture
+  const image = localStorage.getItem('picture')
+  const user = localStorage.getItem('user')
+  async function logout (){
+        
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+
+        window.location.reload();
+
+}
         
 </script>
 <style scoped>

@@ -19,10 +19,8 @@ export default {
         const code = this.$route.query.code
         await this.googleAuth(code)
         this.$router.push('/')
-
         },
         ...mapActions(useAuthStore, ['googleAuth']),
     },
-
 }
 </script>

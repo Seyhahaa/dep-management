@@ -1,15 +1,24 @@
+<script> 
+
+</script>
 <template>
-  <div id="app">
-      <Header />
-      <div class="flex pr-5">
-        <SideBar />
-        <router-view class="bg-[#F2F2F2] w-screen max-h-screen rounded-3xl"/>
+  <div class="flex dark:bg-black">
+      <!-- <Header /> -->
+       <div class="w-1/6 " >
+
+         <SideBar />
+       </div>
+      <div class="w-5/6 p-5">
+        <div class="flex flex-col gap-5">
+            <Header />
+            <router-view class="bg-[#F2F2F2] rounded-3xl"/>
+          </div>
       </div>
   </div>
 </template>
 <script setup>
 import Header from './components/Header.vue'
-import SideBar from './components/SideBar.vue'
+import SideBar from './components/sideBar.vue'
 </script>
 
 <!-- <script setup lang="ts">
