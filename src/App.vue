@@ -11,12 +11,22 @@
       <div class="w-5/6 p-5">
         <div class="flex flex-col gap-5">
             <Header />
-            <router-view class="bg-[#F2F2F2] rounded-3xl"/>
+            <div class="flex flex-col bg-[#F2F2F2]">
+              <div class="flex p-5">
+                <router-view class="w-3/4 rounded-3xl bg-white  mr-5 dark:bg-black  p-5"/>
+                <users class="w-1/4 rounded-2xl bg-white dark:bg-black"/>
+              </div>
+              <div>
+                <file />
+              </div>
+            </div>
           </div>
       </div>
   </div>
 </template>
 <script setup>
+import file from './components/file.vue'
+import users from './components/users.vue'
 import Header from './components/Header.vue'
 import SideBar from './components/sideBar.vue'
 </script>

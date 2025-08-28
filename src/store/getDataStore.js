@@ -7,6 +7,8 @@ export const useDataStore = defineStore("data-store", () => {
   const data = ref([]);
   const isLoading = ref(false);
   const getPdfFile = ref([]);
+  const getImage = ref([])
+  const favorite = ref([])
 
     async function getData() {
       isLoading.value = true;
@@ -17,10 +19,14 @@ export const useDataStore = defineStore("data-store", () => {
         data.value = response.data;
         getPdfFile.value = response.data.filter(
         (item) => item.fileType === "application/pdf"
-        
+      );
+      getImage.value = response.data.filter(
+        (item) => item.fileType !== "application/pdf"
+      );
+      favorite.value = response.data.filter(
+        (item) => item.isFavorite === true
       );
       
-      console.log(getPdfFile.value)
       } catch (error) {
         console.log(error);
       } finally {
@@ -28,6 +34,6 @@ export const useDataStore = defineStore("data-store", () => {
       }
     }
     return {
-    data, getData, isLoading, getPdfFile
+    data, getData, isLoading, getPdfFile, getImage, favorite
     }
 });

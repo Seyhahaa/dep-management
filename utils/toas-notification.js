@@ -5,8 +5,8 @@ import 'vue-toast-notification/dist/theme-sugar.css';
 
 
 export function showToast(message) {
-const $toast = useToast();
-$toast.success(message,{
+const toast = useToast();
+toast.success(message,{
     position: 'top-right',
     duration: 5000,
     dismissible: true,
@@ -16,9 +16,9 @@ $toast.success(message,{
 // Force dismiss specific toast
 
 // Dismiss all opened toast immediately
-$toast.clear();
+toast.clear();
 }
 export function showErrorToast(message) {
-const $toast = useToast();
-$toast.error(message)
+const toast = useToast();
+toast.error(message)
 }

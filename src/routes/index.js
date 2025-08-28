@@ -9,7 +9,7 @@ const routes = [
 ]
 
 const router = createRouter({
-    linkActiveClass: 'bg-[#577EF2] text-white w-full rounded-full', 
+  linkActiveClass: 'bg-[#577EF2] text-white w-full rounded-full',
   linkExactActiveClass: '',
     history: createWebHistory(),
     routes
